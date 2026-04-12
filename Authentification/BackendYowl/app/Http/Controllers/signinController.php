@@ -1,65 +1,43 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use App\Models\rc;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Models\Login;
 
 class signinController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
+    public function get(Request $request){
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+        $data = $request ->validate([
+                'nom_email' => 'required',
+                'password' => 'required',
+            ]);
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+                $nom_mail=$data['nom_email'];
+                $paswd=$data['password'];
+                //verification dans la base de données à partir du modèle signUser
+                $user = (new Login())->login($nom_mail);
+                if(!empty($user)){
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(rc $rc)
-    {
-        //
-    }
+                        foreach($user as $utilisateur){
+                        if(Hash::check($paswd,  $utilisateur['password'])){
+                            Auth::login($utilisateur);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(rc $rc)
-    {
-        //
-    }
+                            return response()->json([
+                                'user' => $utilisateur,
+                                'message'=>'Succes Authentification'
+                            ], 200);
+                            exit();
+                        }
+                        }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, rc $rc)
-    {
-        //
-    }
+                    }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(rc $rc)
-    {
-        //
-    }
-}
+                }
+                //return back()->withErrors(['name_email'=>'Invalid username or email'])->withInput();
+            }
+
+
+?>

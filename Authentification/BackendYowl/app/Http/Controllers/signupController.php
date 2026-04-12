@@ -53,14 +53,19 @@ class signupController extends Controller
             if($password == $pass_confirm){
                 $user= User::create(['name' => $username, 'email' => $email, 'password' => $password, 'Birth_Year'=> $birth_year, 'Phone' => $phone,]);
 
-                ///console.log("succes");
+                if($user){
+                    Auth::login($user);
+                    event(new Registered($user));
+                    ///console.log("succes");
                     return response()->json([
                         'user' => $user,
                         'message'=>'Utilisateur enregistré avec succes'
                     ], 201);
                     exit();
                 }
+            }
     }
+
 
     /**
      * Display the specified resource.
