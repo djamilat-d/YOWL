@@ -9,6 +9,8 @@ error_reporting(E_ALL);
 use App\Models\rc;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Carbon; 
 
 class signupController extends Controller
 {
@@ -36,7 +38,7 @@ class signupController extends Controller
         //
             $data = $request ->validate([
                 'nom' => 'required',
-                'email' => 'required',
+                'email' => 'required|email:rfc,strict,dns|disposable_email',
                 'birth_year' => 'required',
                 'phone' => 'required',
                 'password' => 'required',
@@ -49,21 +51,27 @@ class signupController extends Controller
             $birth_year = $data['birth_year'];
             $phone=$data['phone'];
             $pass_confirm=$data['password_confirmation'];
-
+            $date = Carbon::parse($birth_year)->age;
             if($password == $pass_confirm){
-                $user= User::create(['name' => $username, 'email' => $email, 'password' => $password, 'Birth_Year'=> $birth_year, 'Phone' => $phone,]);
+                if($date >= 13 ){
+                    $user= User::create(['name' => $username, 'email' => $email, 'password' => $password, 'Birth_Year'=> $birth_year, 'Phone' => $phone,]);
 
                 if($user){
+
                     Auth::login($user);
-                    event(new Registered($user));
-                    ///console.log("succes");
                     return response()->json([
                         'user' => $user,
                         'message'=>'Utilisateur enregistré avec succes'
                     ], 201);
                     exit();
                 }
-            }
+                }else{return response()->json([
+                        'age'=>'Vous n\'avez pas l\'age requise'
+                    ]);}
+                
+            }else {return response()->json([
+                        'pass_confi'=>'Erreur password confirmation'
+                    ]);}
     }
 
 

@@ -28,15 +28,17 @@ class signinController extends Controller
                             return response()->json([
                                 'user' => $utilisateur,
                                 'message'=>'Succes Authentification'
-                            ], 200);
+                            ]);
                             exit();
                         }
                         }
 
-                    }
+                    } else {return response()->json([
+                        'nom_email'=>'Username or email incorrect'
+                    ]);}
 
                 }
-                //return back()->withErrors(['name_email'=>'Invalid username or email'])->withInput();
+                
             }
 
 
