@@ -54,7 +54,7 @@ class signupController extends Controller
             $date = Carbon::parse($birth_year)->age;
             if($password == $pass_confirm){
                 if($date >= 13 ){
-                    $user= User::create(['name' => $username, 'email' => $email, 'password' => $password, 'Birth_Year'=> $birth_year, 'Phone' => $phone,]);
+                    $user= User::create(['name' => $username, 'email' => $email, 'password' => $password, 'birth_Year'=> $birth_year, 'phone' => $phone,]);
 
                 if($user){
 
