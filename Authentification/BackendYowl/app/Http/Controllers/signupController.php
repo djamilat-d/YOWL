@@ -37,15 +37,15 @@ class signupController extends Controller
     {
         //
             $data = $request ->validate([
-                'nom' => 'required',
+                'name' => 'required',
                 'email' => 'required|email:rfc,strict,dns|disposable_email',
                 'birth_year' => 'required',
                 'phone' => 'required',
-                'password' => 'required',
+                'password' => 'required|min:8',
                 'password_confirmation' => 'required',
             ]);
 
-            $username = $data['nom'];
+            $username = $data['name'];
             $email=$data['email'];
             $password=$data['password'];
             $birth_year = $data['birth_year'];
@@ -59,9 +59,11 @@ class signupController extends Controller
                 if($user){
 
                     Auth::login($user);
+                    $token = Auth::user()->createToken('API Token')->plainTextToken;
                     return response()->json([
                         'user' => $user,
-                        'message'=>'Utilisateur enregistré avec succes'
+                        'token' => $token,
+                        'succes'=>'Utilisateur enregistré avec succes'
                     ], 201);
                     exit();
                 }

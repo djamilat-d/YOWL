@@ -25,8 +25,11 @@ class signinController extends Controller
                         if(Hash::check($paswd,  $utilisateur['password'])){
                             Auth::login($utilisateur);
 
+                            $token = Auth::user()->createToken('API Token')->plainTextToken;
+                            //$cookie = cookie('jwt', $token, 60*24);
                             return response()->json([
                                 'user' => $utilisateur,
+                                'token' => $token,
                                 'message'=>'Succes Authentification'
                             ]);
                             exit();
