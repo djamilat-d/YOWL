@@ -17,6 +17,10 @@ class Comment extends Model
         'contenue'     
     ];
 
+    public function show($titre){
+        $id_url=Url::select('id')->where('titre',$titre)->get();
+        return $id_url;
+    }
    
     public function user(): BelongsTo
     {

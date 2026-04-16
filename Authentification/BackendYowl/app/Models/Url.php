@@ -15,11 +15,6 @@ class Url extends Model
         'url',
         'titre'     
     ];
-
-    public function show($titre){
-        $id=Url::select('id')->where('name',$titre)->get();
-        return $id;
-    }
    
     public function user(): BelongsTo
     {

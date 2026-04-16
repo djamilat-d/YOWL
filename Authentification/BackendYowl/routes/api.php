@@ -14,7 +14,16 @@ Route::middleware('auth:sanctum')->group(function () {
     });
     //Route pour ajouter un commentaire
     Route::post('/add-comment', [commentController::class, 'store']);
+    //Route update un commentaire
+    Route::post('/comment-update/{id}', [commentController::class, 'update']);
+    //Route modification d'un commentaire
+    Route::get('/comment-modifier/{id}', [commentController::class, 'show']);
 });
+
+//Tous les commentaires
+Route::get('/comments', [commentController::class, 'index']);
+
+
 
 // Route test pour tester l'API
 Route::get('test', function(){
@@ -36,14 +45,14 @@ Route::post('/update/{id}', [UserController::class, 'update']);
 Route::get('/supprimer/{id}', [UserController::class, 'destroy']);
 
 //Tous les commentaires
-Route::get('/comments', [commentController::class, 'index']);
+//Route::get('/comments', [commentController::class, 'index']);
 
 
 
-Route::get('/creer', [commentController::class, 'create']);
+//Route::get('/creer', [commentController::class, 'create']);
 
-Route::get('/modifier/{id}', [commentController::class, 'show']);
-Route::post('/update/{id}', [commentController::class, 'update']);
-Route::get('/supprimer/{id}', [commentController::class, 'destroy']);
+//Route::get('/modifier/{id}', [commentController::class, 'show']);
+//Route::post('/update/{id}', [commentController::class, 'update']);
+//Route::get('/supprimer/{id}', [commentController::class, 'destroy']);
 
 
