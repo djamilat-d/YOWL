@@ -18,6 +18,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/comment-update/{id}', [commentController::class, 'update']);
     //Route modification d'un commentaire
     Route::get('/comment-modifier/{id}', [commentController::class, 'show']);
+
+
+    //CRUD PROFILE USER
+    Route::get('/users', [UserController::class, 'index']);
+    Route::post('/users/add', [UserController::class, 'store']);
+    Route::get('/users/{id}', [UserController::class, 'show']);
+    Route::put('/users/update/{id}', [UserController::class, 'update']);
+    Route::delete('/users/supprimer/{id}', [UserController::class, 'destroy']);
 });
 
 //Tous les commentaires
@@ -35,14 +43,7 @@ Route::post('signup', [signupController::class, 'store']);
 Route::post('signin', [signinController::class, 'get']);
 
 
-//CRUD PROFILE USER
 
-Route::get('/acceuil', [UserController::class, 'index']);
-Route::get('/creer', [UserController::class, 'create']);
-Route::post('/enregistrer', [UserController::class, 'store']);
-Route::get('/modifier/{id}', [UserController::class, 'show']);
-Route::post('/update/{id}', [UserController::class, 'update']);
-Route::get('/supprimer/{id}', [UserController::class, 'destroy']);
 
 //Tous les commentaires
 //Route::get('/comments', [commentController::class, 'index']);

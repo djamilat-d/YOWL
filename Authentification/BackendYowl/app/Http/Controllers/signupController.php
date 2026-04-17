@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon; 
+use Illuminate\Support\Facades\Validator;
 
 class signupController extends Controller
 {
@@ -39,22 +40,42 @@ class signupController extends Controller
             $data = $request ->validate([
                 'name' => 'required',
                 'email' => 'required|email:rfc,strict,dns|disposable_email',
-                'birth_year' => 'required',
+                'birth_year' => 'required|date',
                 'phone' => 'required',
                 'password' => 'required|min:8',
                 'password_confirmation' => 'required',
+                'photo_profil'=> 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048'
             ]);
 
+            
             $username = $data['name'];
             $email=$data['email'];
             $password=$data['password'];
             $birth_year = $data['birth_year'];
             $phone=$data['phone'];
             $pass_confirm=$data['password_confirmation'];
+
+
+
+            if(User::where('email', $email)->exists()){
+                return response()->json(['email'=>'L\'email existe deja']);
+            }
+            
+
             $date = Carbon::parse($birth_year)->age;
             if($password == $pass_confirm){
                 if($date >= 13 ){
-                    $user= User::create(['name' => $username, 'email' => $email, 'password' => $password, 'birth_Year'=> $birth_year, 'phone' => $phone,]);
+                    /*if($request->hasFile('photo_profil')){
+                        $path =$request->file('photo_profil')->store('icons', 'public');
+                        $data['photo_profil'] = $path;
+                    }
+                    $user = User::create($data);*/
+                    if(isset($data['photo_profil']) && !$data['photo_profil']){
+                        $path = $request->file('photo_profil')->store('images', 'public');
+                        $user= User::create(['name' => $username, 'email' => $email, 'password' => $password, 'birth_Year'=> $birth_year, 'phone' => $phone,'photo_profil'=>$path]);
+                    }else{
+                        $user= User::create(['name' => $username, 'email' => $email, 'password' => $password, 'birth_Year'=> $birth_year, 'phone' => $phone,]);//'photo_profil'=>$path]);
+                    }                    
 
                 if($user){
 

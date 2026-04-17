@@ -19,7 +19,7 @@ class signinController extends Controller
                 $paswd=$data['password'];
                 //verification dans la base de données à partir du modèle signUser
                 $user = (new Login())->login($nom_mail);
-                if(!empty($user)){
+                if($user->isNotEmpty()){
 
                         foreach($user as $utilisateur){
                         if(Hash::check($paswd,  $utilisateur['password'])){
@@ -33,12 +33,14 @@ class signinController extends Controller
                                 'message'=>'Succes Authentification'
                             ]);
                             exit();
-                        }
+                        }else{return response()->json(['paswd'=>'Username, email or password incorrect']);}
+                        
                         }
 
                     } else {return response()->json([
                         'nom_email'=>'Username or email incorrect'
-                    ]);}
+                            ]);                    
+                        }
 
                 }
                 

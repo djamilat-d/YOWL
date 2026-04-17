@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import SignupPage from '@/components/SignupPage.vue'
 import SigninPage from '@/components/SigninPage.vue'
 import CommentPage from '@/components/CommentPage.vue'
+import ModifieruserPage from '@/components/ModifieruserPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -37,6 +38,12 @@ const router = createRouter({
       path: '/add-comment',
       name: 'add-comment',
       component: CommentPage,
+      props: true,
+    },
+    {
+      path: '/modifieruser',
+      name: 'modifieruser',
+      component: ModifieruserPage,
       props: true,
     },
   ],
