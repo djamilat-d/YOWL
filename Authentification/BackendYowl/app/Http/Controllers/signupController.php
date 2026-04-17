@@ -72,9 +72,9 @@ class signupController extends Controller
                     $user = User::create($data);*/
                     if(isset($data['photo_profil']) && !$data['photo_profil']){
                         $path = $request->file('photo_profil')->store('images', 'public');
-                        $user= User::create(['name' => $username, 'email' => $email, 'password' => $password, 'birth_Year'=> $birth_year, 'phone' => $phone,'photo_profil'=>$path]);
+                        $user= User::create(['name' => $username, 'email' => $email, 'password' => $password, 'birth_year'=> $birth_year, 'phone' => $phone,'photo_profil'=>$path]);
                     }else{
-                        $user= User::create(['name' => $username, 'email' => $email, 'password' => $password, 'birth_Year'=> $birth_year, 'phone' => $phone,]);//'photo_profil'=>$path]);
+                        $user= User::create(['name' => $username, 'email' => $email, 'password' => $password, 'birth_year'=> $birth_year, 'phone' => $phone,]);//'photo_profil'=>$path]);
                     }                    
 
                 if($user){

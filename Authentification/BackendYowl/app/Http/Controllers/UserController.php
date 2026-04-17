@@ -30,7 +30,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         //
-        $request->validate([
+        $pass = $request->validate([
             'name' => 'required|string',
             'email' => 'required|email|unique:users',
             'password'=> 'required|min:8',
@@ -53,7 +53,7 @@ class UserController extends Controller
             }
 
         $date = Carbon::parse($data['birth_year'])->age;
-        if($data['password'] == $request['password_confirmation']){
+        if($data['password'] == $pass['password_confirmation']){
                 if($date >= 13 ){
                     /*if($request->hasFile('photo_profil')){
                         $path =$request->file('photo_profil')->store('images', 'public');
@@ -65,9 +65,9 @@ class UserController extends Controller
                     return response()->json($user);*/
                     if(isset($data['photo_profil']) && !$data['photo_profil']){
                         $path = $request->file('photo_profil')->store('images', 'public');
-                        $user= User::create(['name' => $username, 'email' => $email, 'password' => $password, 'birth_Year'=> $birth_year, 'phone' => $phone,'photo_profil'=>$path]);
+                        $user= User::create(['name' => $data['name'], 'email' => $data['email'], 'password' => $data['password'], 'birth_year'=> $data['birth_year'], 'phone' => $data['phone'],'photo_profil'=>$path]);
                     }else{
-                        $user= User::create(['name' => $username, 'email' => $email, 'password' => $password, 'birth_Year'=> $birth_year, 'phone' => $phone,]);//'photo_profil'=>$path]);
+                        $user= User::create(['name' => $data['name'], 'email' => $data['email'], 'password' => $data['password'], 'birth_year'=> $data['birth_year'], 'phone' => $data['phone']]);//'photo_profil'=>$path]);
                     } 
                 }else{return response()->json([
                         'age'=>'Vous n\'avez pas l\'age requise'
