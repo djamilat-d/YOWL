@@ -53,7 +53,7 @@ class signinController extends Controller
                                 'token' => $token,
                                 'message'=>'Succes Authentification'
                             ]);
-                            exit();
+                            
                         }else{return response()->json(['paswd'=>'Username, email or password incorrect']);}
 
                         }

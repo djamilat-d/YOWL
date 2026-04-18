@@ -110,7 +110,7 @@ class signupController extends Controller
                         'token' => $token,
                         'succes'=>'Utilisateur enregistré avec succes'
                     ], 201);
-                    exit();
+                    
                 }
                 }else{return response()->json([
                         'age'=>'Vous n\'avez pas l\'age requise'
