@@ -110,7 +110,7 @@ class signupController extends Controller
                         'token' => $token,
                         'succes'=>'Utilisateur enregistré avec succes'
                     ], 201);
-                    
+
                 }
                 }else{return response()->json([
                         'age'=>'Vous n\'avez pas l\'age requise'
@@ -125,32 +125,32 @@ class signupController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(rc $rc)
-    {
-        //
-    }
+    // public function show(rc $rc)
+    // {
+    //     //
+    // }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(rc $rc)
-    {
-        //
-    }
+    // public function edit(rc $rc)
+    // {
+    //     //
+    // }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, rc $rc)
-    {
-        //
-    }
+    // public function update(Request $request, rc $rc)
+    // {
+    //     //
+    // }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(rc $rc)
-    {
-        //
-    }
+    // public function destroy(rc $rc)
+    // {
+    //     //
+    // }
 }

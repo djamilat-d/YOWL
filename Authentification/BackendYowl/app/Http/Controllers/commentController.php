@@ -19,7 +19,7 @@ class commentController extends Controller
     public function index()
     {
         //
-        $comments= Comment::all();
+        $comments= Comment::with('replies')->whereNull('parent_id')->paginate(5);
         return response()->json($comments);
     }
 
@@ -40,12 +40,26 @@ class commentController extends Controller
 
 
         $request->validate([
-            'url' => 'required|string',
+            'url' => 'required_without:parent_id|nullable|string',
+            'parent_id'=> 'nullable|exists:comments,id',
             'contenue'  => 'required|string'
         ]);
 
-        DB::transaction(function () use ($request) {
+        //on va gerer le cas ou ces un sous-commentaire et le cas ou il est le commentre parent
+        //si ces un sosu commentre on va recuperer l'url du commentaire parent
         $user = Auth::user();
+
+        if($request->parent_id){
+            $comment = Comment::create([
+                'contenue'  => $request->contenue,
+                'user_id'   => $user->id,
+                'parent_id'=> $request->parent_id,
+                'url_id'    =>Comment::find($request->parent_id)->url_id,
+            ]);
+            return response()->json($comment);
+        }
+
+        DB::transaction(function () use ($request,$user) {
 
 
         //return response()->json($request->url);
@@ -61,7 +75,8 @@ class commentController extends Controller
                 $comment = Comment::create([
                     'contenue'  => $request->contenue,
                     'url_id'    => $id_url[0]->id,
-                    'user_id'   => $user->id
+                    'user_id'   => $user->id,
+                    'parent_id'=> null,
                 ]);
                 break;
             default :
@@ -73,7 +88,8 @@ class commentController extends Controller
                 $comment = Comment::create([
                     'contenue'  => $request->contenue,
                     'url_id'    => $url->id,
-                    'user_id'   => $user->id
+                    'user_id'   => $user->id,
+                    'parent_id'=>null,
                 ]);
                 break;
         }
