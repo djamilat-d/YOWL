@@ -18,7 +18,7 @@ class signinController extends Controller
             required: true,
             content: new OA\JsonContent(
                 properties: [
-                    new OA\Property(property: 'nom_email', type: 'string', example: 'equality@gmail.com'),
+                    new OA\Property(property: 'email', type: 'string', example: 'equality@gmail.com'),
                     new OA\Property(property: 'password', type: 'string', example: '12345678')
                 ]
             )
@@ -32,11 +32,11 @@ class signinController extends Controller
     public function get(Request $request){
 
         $data = $request ->validate([
-                'nom_email' => 'required',
+                'email' => 'required',
                 'password' => 'required',
             ]);
 
-                $nom_mail=$data['nom_email'];
+                $nom_mail=$data['email'];
                 $paswd=$data['password'];
                 //verification dans la base de données à partir du modèle signUser
                 $user = (new Login())->login($nom_mail);
@@ -53,13 +53,13 @@ class signinController extends Controller
                                 'token' => $token,
                                 'message'=>'Succes Authentification'
                             ]);
-                            
+
                         }else{return response()->json(['paswd'=>'Username, email or password incorrect']);}
 
                         }
 
                     } else {return response()->json([
-                        'nom_email'=>'Username or email incorrect'
+                        'mail'=>'Username or email incorrect'
                             ]);
                         }
 

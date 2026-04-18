@@ -59,7 +59,7 @@ class commentController extends Controller
             return response()->json($comment);
         }
 
-        DB::transaction(function () use ($request,$user) {
+        // DB::transaction(function () use ($request,$user) {
 
 
         //return response()->json($request->url);
@@ -124,7 +124,7 @@ class commentController extends Controller
                 'author'      => $info->authorName,
                 'comment'     => $comment
             ]);
-        });
+        // });
 
     }
 
