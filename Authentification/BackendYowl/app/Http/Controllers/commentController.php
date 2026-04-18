@@ -84,7 +84,7 @@ class commentController extends Controller
             'user_id'   => $user->id
         ]);
         } else {
-            
+
             $url= Url::create([
             'url' => $request->url,
             'titre' => $info->title
@@ -97,13 +97,13 @@ class commentController extends Controller
         ]);
         }*/
 
-        
-        
+
+
         return response()->json([
                 'title'       => $info->title,
                 'description' => $info->description,
                 'image'       => $info->image,
-                //'code'        => $info->code->html, 
+                //'code'        => $info->code->html,
                 'provider'    => $info->providerName,
                 'author'      => $info->authorName,
                 'comment'     => $comment
@@ -119,7 +119,7 @@ class commentController extends Controller
     {
         //
         $comment = Comment::find($id);
-        
+
         if(!(isset($comment))){
             return response()->json(['message'=> "Ce commentaire n'existe pas!"]);
         }
@@ -135,7 +135,7 @@ class commentController extends Controller
     public function edit($id)
     {
         //
-        
+
     }
 
     /**
@@ -171,8 +171,11 @@ class commentController extends Controller
         if(!(isset($comment))){
             return response()->json(['message'=>"Ce commentaire n'existe pas!"]);
         }
+        if(Auth::id() !== $comment->user_id){
+            return response()->json(['message'=>"vous n'avez pas acces"]);
+        }
         $comment->delete();
         return response()->json(['message'=> "Commentaire suprimé avec succes"]);
-    
+
     }
 }

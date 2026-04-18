@@ -6,10 +6,30 @@ use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Carbon; 
+use Illuminate\Support\Carbon;
+use OpenApi\Attributes as OA;
 
 class UserController extends Controller
 {
+
+    #[OA\Get(
+        path: 'api/users',
+        summary: 'Liste tous les utilisatrs',
+        security: [['sanctum' => []]],
+        tags: ['Users'],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Liste des users'
+            ),
+            new OA\Response(
+                response: 403,
+                description: 'Acces refuse'
+            )
+        ]
+    )]
+
+
     /**
      * Display a listing of the resource.
      */
@@ -61,21 +81,21 @@ class UserController extends Controller
                     }
                     $user = User::create($data);
 
-                    
+
                     return response()->json($user);*/
                     if(isset($data['photo_profil']) && !$data['photo_profil']){
                         $path = $request->file('photo_profil')->store('images', 'public');
                         $user= User::create(['name' => $data['name'], 'email' => $data['email'], 'password' => $data['password'], 'birth_year'=> $data['birth_year'], 'phone' => $data['phone'],'photo_profil'=>$path]);
                     }else{
                         $user= User::create(['name' => $data['name'], 'email' => $data['email'], 'password' => $data['password'], 'birth_year'=> $data['birth_year'], 'phone' => $data['phone']]);//'photo_profil'=>$path]);
-                    } 
+                    }
                 }else{return response()->json([
                         'age'=>'Vous n\'avez pas l\'age requise'
                     ]);}
         }else {return response()->json([
                         'pass_confi'=>'Erreur password confirmation'
                     ]);}
-        
+
     }
 
     /**
@@ -111,7 +131,7 @@ class UserController extends Controller
         if($userConnecter->id !== $id && $userConnecter->role !== 'admin'){
             return response()->json(['message'=>"impossible,vous n'ave pas acces"]);
         }
-        
+
         return response()->json($user);*/
     }
 
@@ -123,7 +143,7 @@ class UserController extends Controller
 
         $user= User::find($id);
         $userConnecter= $request->user();
-       
+
         if(!$user){
             return response()->json(['message'=> "utilisateur n'existe pas!"]);
         }
@@ -163,7 +183,7 @@ class UserController extends Controller
      */
     public function destroy(Request $request,$id)
     {
- 
+
         $user = User::find($id);
         $userConnecter= $request->user();
 

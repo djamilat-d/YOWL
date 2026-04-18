@@ -5,9 +5,30 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Login;
+use OpenApi\Attributes as OA;
 
 class signinController extends Controller
 {
+
+    #[OA\Post(
+        path: 'api/signin',
+        summary: 'Connexion des utilisatrs',
+        tags: ['Authentification'],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                properties: [
+                    new OA\Property(property: 'nom_email', type: 'string', example: 'equality@gmail.com'),
+                    new OA\Property(property: 'password', type: 'string', example: '12345678')
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(response: 200,description: 'conexxion reusie'),
+            new OA\Response(response: 403,description: 'identifiants incorrects')
+        ]
+    )]
+
     public function get(Request $request){
 
         $data = $request ->validate([
@@ -34,16 +55,16 @@ class signinController extends Controller
                             ]);
                             exit();
                         }else{return response()->json(['paswd'=>'Username, email or password incorrect']);}
-                        
+
                         }
 
                     } else {return response()->json([
                         'nom_email'=>'Username or email incorrect'
-                            ]);                    
+                            ]);
                         }
 
                 }
-                
+
             }
 
 

@@ -10,11 +10,35 @@ use App\Models\rc;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Carbon; 
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Validator;
+use OpenApi\Attributes as OA;
+
 
 class signupController extends Controller
 {
+
+
+    // #[OA\Post(
+    //     path: 'api/signup',
+    //     summary: 'inscription des utilisatrs',
+    //     tags: ['Authentification'],
+    //     requestBody: new OA\RequestBody(
+    //         required: true,
+    //         content: new OA\JsonContent(
+    //             properties: [
+    //                 new OA\Property(property: 'nom_email', type: 'string', example: 'equality@gmail.com'),
+    //                 new OA\Property(property: 'password', type: 'string', example: '12345678')
+    //             ]
+    //         )
+    //     ),
+    //     responses: [
+    //         new OA\Response(response: 200,description: 'conexxion reusie'),
+    //         new OA\Response(response: 403,description: 'identifiants incorrects')
+    //     ]
+    // )]
+
+
     /**
      * Display a listing of the resource.
      */
@@ -47,7 +71,7 @@ class signupController extends Controller
                 'photo_profil'=> 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048'
             ]);
 
-            
+
             $username = $data['name'];
             $email=$data['email'];
             $password=$data['password'];
@@ -60,7 +84,7 @@ class signupController extends Controller
             if(User::where('email', $email)->exists()){
                 return response()->json(['email'=>'L\'email existe deja']);
             }
-            
+
 
             $date = Carbon::parse($birth_year)->age;
             if($password == $pass_confirm){
@@ -75,7 +99,7 @@ class signupController extends Controller
                         $user= User::create(['name' => $username, 'email' => $email, 'password' => $password, 'birth_year'=> $birth_year, 'phone' => $phone,'photo_profil'=>$path]);
                     }else{
                         $user= User::create(['name' => $username, 'email' => $email, 'password' => $password, 'birth_year'=> $birth_year, 'phone' => $phone,]);//'photo_profil'=>$path]);
-                    }                    
+                    }
 
                 if($user){
 
@@ -91,7 +115,7 @@ class signupController extends Controller
                 }else{return response()->json([
                         'age'=>'Vous n\'avez pas l\'age requise'
                     ]);}
-                
+
             }else {return response()->json([
                         'pass_confi'=>'Erreur password confirmation'
                     ]);}

@@ -1,0 +1,96 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "YOWL API",
+        "description": "Dcumentation de l'API YOWL - app de commentaire",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://127.0.0.1:8000",
+            "description": "Serveur local"
+        }
+    ],
+    "paths": {
+        "api/users": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Liste tous les utilisatrs",
+                "description": "Display a listing of the resource.",
+                "operationId": "fb731950393954765544c8ff1babb2ff",
+                "responses": {
+                    "200": {
+                        "description": "Liste des users"
+                    },
+                    "403": {
+                        "description": "Acces refuse"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "api/signin": {
+            "post": {
+                "tags": [
+                    "Authentification"
+                ],
+                "summary": "Connexion des utilisatrs",
+                "operationId": "047818f50ec5e3518264f1abbafa7978",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nom_email": {
+                                        "type": "string",
+                                        "example": "equality@gmail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "12345678"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "conexxion reusie"
+                    },
+                    "403": {
+                        "description": "identifiants incorrects"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "sanctum": {
+                "type": "apiKey",
+                "description": "Enter token in format (Bearer <token>)",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Users",
+            "description": "Users"
+        },
+        {
+            "name": "Authentification",
+            "description": "Authentification"
+        }
+    ]
+}
