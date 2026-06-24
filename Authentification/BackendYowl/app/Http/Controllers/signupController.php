@@ -18,27 +18,6 @@ use OpenApi\Attributes as OA;
 class signupController extends Controller
 {
 
-
-    // #[OA\Post(
-    //     path: 'api/signup',
-    //     summary: 'inscription des utilisatrs',
-    //     tags: ['Authentification'],
-    //     requestBody: new OA\RequestBody(
-    //         required: true,
-    //         content: new OA\JsonContent(
-    //             properties: [
-    //                 new OA\Property(property: 'nom_email', type: 'string', example: 'equality@gmail.com'),
-    //                 new OA\Property(property: 'password', type: 'string', example: '12345678')
-    //             ]
-    //         )
-    //     ),
-    //     responses: [
-    //         new OA\Response(response: 200,description: 'conexxion reusie'),
-    //         new OA\Response(response: 403,description: 'identifiants incorrects')
-    //     ]
-    // )]
-
-
     /**
      * Display a listing of the resource.
      */
@@ -54,6 +33,30 @@ class signupController extends Controller
     {
         //
     }
+
+    #[OA\Post(
+        path: '/api/signup',
+        summary: 'inscription des utilisatrs',
+        tags: ['Authentification'],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                properties: [
+                    new OA\Property(property: 'name', type:'string', example: 'equality'),
+                    new OA\Property(property: 'email', type:'string', example: 'equality@gmail.com'),
+                    new OA\Property(property: 'password', type: 'string', example: '12345678'),
+                    new OA\Property(property: 'password_confirmation', type: 'string', example: '12345678'),
+                    new OA\Property(property: 'birth_year', type: 'string', example: '2026-09-28'),
+                    new OA\Property(property: 'phone', type: 'string', example: '0748743766')
+                ])
+        ),
+        responses: [
+            new OA\Response(response: 201,description: 'Utilisateur cree avec successss'),
+            new OA\Response(response: 400,description: 'Age Insuffisant'),
+            new OA\Response(response: 422,description: 'donnees non valides')
+        ]
+    )]
+
 
     /**
      * Store a newly created resource in storage.

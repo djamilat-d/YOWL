@@ -13,7 +13,7 @@ class UserController extends Controller
 {
 
     #[OA\Get(
-        path: 'api/users',
+        path: '/api/users',
         summary: 'Liste tous les utilisatrs',
         security: [['sanctum' => []]],
         tags: ['Users'],
@@ -24,7 +24,7 @@ class UserController extends Controller
             ),
             new OA\Response(
                 response: 403,
-                description: 'Acces refuse'
+                description: 'Acces refuse,juste les admins!!!'
             )
         ]
     )]
@@ -35,7 +35,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        //
+
         $userConnecter= $request->user();
         if($userConnecter->role !== 'admin'){
             return response()->json(['message'=>"impossible,vous n'ave pas acces"]);
@@ -44,12 +44,37 @@ class UserController extends Controller
         return response()->json($users);
     }
 
+
+    #[OA\Post(
+        path: '/api/users/add',
+        summary: 'Inscriptionn utilisateurs',
+        security: [['sanctum' => []]],
+        tags: ['Users'],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                properties: [
+                    new OA\Property(property: 'name', type:'string', example: 'equality'),
+                    new OA\Property(property: 'email', type:'string', example: 'equality@gmail.com'),
+                    new OA\Property(property: 'password', type: 'string', example: '12345678'),
+                    new OA\Property(property: 'password_confirmation', type: 'string', example: '12345678'),
+                    new OA\Property(property: 'birth_year', type: 'string', example: '2026-09-28'),
+                    new OA\Property(property: 'phone', type: 'string', example: '07 48 74 37 66')
+                ])
+        ),
+        responses: [
+            new OA\Response(response: 201,description: 'Utilisateur cree avec successss'),
+            new OA\Response(response: 422,description: 'donnees non valides')
+        ]
+    )]
+
+
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        //
+
         $pass = $request->validate([
             'name' => 'required|string',
             'email' => 'required|email|unique:users',
@@ -98,6 +123,21 @@ class UserController extends Controller
 
     }
 
+
+
+    #[OA\Get(
+        path: '/api/users/{id}',
+        summary: 'Afficher un utilisatrs',
+        security: [['sanctum' => []]],
+        tags: ['Users'],
+        parameters:[new OA\Parameter(name: 'id', in: 'path',required: true, schema: new OA\Schema(type:'integer'))],
+        responses: [
+            new OA\Response(response: 200, description: 'users trouvé'),
+            new OA\Response(response: 404, description: 'users non trouvé'),
+            new OA\Response(response: 403,description: 'Acces refuse,juste les admins!!!')
+        ]
+    )]
+
     /**
      * Display the specified resource.
      */
@@ -134,6 +174,30 @@ class UserController extends Controller
 
         return response()->json($user);*/
     }
+
+
+    #[OA\Patch(
+        path: '/api/users/update/{id}',
+        summary: 'Modifier un utilisateurs',
+        security: [['sanctum' => []]],
+        tags: ['Users'],
+        parameters:[new OA\Parameter(name: 'id', in: 'path',required: true, schema: new OA\Schema(type:'integer'))],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                properties: [
+                    new OA\Property(property: 'name', type:'string', example: 'equality'),
+                    new OA\Property(property: 'email', type:'string', example: 'equality@gmail.com'),
+                    new OA\Property(property: 'phone', type: 'string', example: '0748743766')
+                ])
+        ),
+        responses: [
+            new OA\Response(response: 200,description: 'Utilisateur modifier avec successss'),
+            new OA\Response(response: 404, description: 'users non trouvé'),
+            new OA\Response(response: 403,description: 'Acces refuse,juste les admins!!!')
+        ]
+    )]
+
 
     /**
      * Update the specified resource in storage.
@@ -177,6 +241,21 @@ class UserController extends Controller
                 break;
         }
     }
+
+
+    #[OA\Delete(
+        path: '/api/users/supprimer/{id}',
+        summary: 'Supprimer un utilisatrs',
+        security: [['sanctum' => []]],
+        tags: ['Users'],
+        parameters:[new OA\Parameter(name: 'id', in: 'path',required: true, schema: new OA\Schema(type:'integer'))],
+        responses: [
+            new OA\Response(response: 200, description: 'users supprimé'),
+            new OA\Response(response: 404, description: 'users non trouvé'),
+            new OA\Response(response: 403,description: 'Acces refuse,juste les admins!!!')
+        ]
+    )]
+
 
     /**
      * Remove the specified resource from storage.

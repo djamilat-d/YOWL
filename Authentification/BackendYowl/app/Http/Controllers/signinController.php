@@ -11,7 +11,7 @@ class signinController extends Controller
 {
 
     #[OA\Post(
-        path: 'api/signin',
+        path: '/api/signin',
         summary: 'Connexion des utilisatrs',
         tags: ['Authentification'],
         requestBody: new OA\RequestBody(

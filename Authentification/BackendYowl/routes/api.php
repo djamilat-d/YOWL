@@ -18,7 +18,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::patch('/comment-update/{id}', [commentController::class, 'update']);
     //Route modification d'un commentaire
     Route::get('/comment-modifier/{id}', [commentController::class, 'show']);
-    Route::delete('/comment-supprimer/{id}', [commentController::class, 'destroy']);
+    Route::delete('/comment-delete/{id}', [commentController::class, 'destroy']);
 
 
     //CRUD PROFILE USER

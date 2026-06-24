@@ -9,17 +9,32 @@ use Illuminate\Support\Facades\DB;
 use Embed\Embed;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Url;
+use OpenApi\Attributes as OA;
+
 
 
 class commentController extends Controller
 {
+
+
+    // #[OA\Get(
+    //     path: '/api/comments',
+    //     summary: 'Liste tous les utilisatrs',
+    //     security: [['sanctum' => []]],
+    //     tags: ['Comments'],
+    //     responses: [
+    //         new OA\Response(response: 200,description: 'Liste des commentaires')
+    //     ]
+    // )]
+
     /**
      * Display a listing of the resource.
+     * ici on va essayer d'aller chercher les reponses des commenteaire parent
      */
     public function index()
     {
-        //
-        $comments= Comment::with('replies')->whereNull('parent_id')->paginate(5);
+        //$comments= Comment::with('user','url')->get()->paginate(5);
+        $comments= Comment::with('replies','url')->whereNull('parent_id')->paginate(500000);
         return response()->json($comments);
     }
 
@@ -30,6 +45,26 @@ class commentController extends Controller
     {
         //
     }
+
+
+    // #[OA\Post(
+    //     path: '/api/add-comment',
+    //     summary: 'Ajouter des commentaires',
+    //     security: [['sanctum' => []]],
+    //     tags: ['Comments'],
+    //     requestBody: new OA\RequestBody(
+    //         required: true,
+    //         content: new OA\JsonContent(
+    //             properties: [
+    //                 new OA\Property(property: 'url', type:'string', example: 'https://equality.com'),
+    //                 new OA\Property(property: 'contenue', type:'string', example: 'Meilleur Groupe '),
+    //             ])
+    //     ),
+    //     responses: [
+    //         new OA\Response(response: 200,description: 'commentaire cree avec successss'),
+    //         new OA\Response(response: 422,description: 'donnees non valides')
+    //     ]
+    // )]
 
     /**
      * Store a newly created resource in storage.
@@ -63,8 +98,9 @@ class commentController extends Controller
 
 
         //return response()->json($request->url);
-        $embed = new Embed();
+        $embed = new \Embed\Embed();
         $info = $embed->get($request->url);
+        // $info = \Embed\Embed::create(request->url);
         //return response()->json($info->title);
 
         $id_url = (new Comment())->show($info->title);
@@ -128,6 +164,20 @@ class commentController extends Controller
 
     }
 
+
+    // #[OA\Get(
+    //     path: '/api/comment-modifier/{id}',
+    //     summary: 'afficherer un commentaire',
+    //     security: [['sanctum' => []]],
+    //     tags: ['Comments'],
+    //     parameters:[new OA\Parameter(name: 'id', in: 'path',required: true, schema: new OA\Schema(type:'integer'))],
+    //     responses: [
+    //         new OA\Response(response: 200, description: 'commentaire trouvé'),
+    //         new OA\Response(response: 404, description: 'commentaire non trouvé'),
+    //         new OA\Response(response: 403,description: 'Acces refuse,juste les admins!!!')
+    //     ]
+    // )]
+
     /**
      * Display the specified resource.
      */
@@ -154,6 +204,27 @@ class commentController extends Controller
 
     }
 
+
+    // #[OA\Patch(
+    //     path: '/api/comment-update/{id}',
+    //     summary: 'Modifier un commentaire',
+    //     security: [['sanctum' => []]],
+    //     tags: ['Comments'],
+    //     parameters:[new OA\Parameter(name: 'id', in: 'path',required: true, schema: new OA\Schema(type:'integer'))],
+    //     requestBody: new OA\RequestBody(
+    //         required: true,
+    //         content: new OA\JsonContent(
+    //             properties: [
+    //                 new OA\Property(property: 'contenue', type:'string', example: 'equality modifier'),
+    //             ])
+    //     ),
+    //     responses: [
+    //         new OA\Response(response: 200,description: 'commentaire modifier avec successss'),
+    //         new OA\Response(response: 403,description: 'Acces refuse,juste les admins!!!')
+    //     ]
+    // )]
+
+
     /**
      * Update the specified resource in storage.
      */
@@ -177,6 +248,21 @@ class commentController extends Controller
             return response()->json(['message'=>"Modification effectuée avec succès"]);
         } else {return response()->json(['message'=>"Aucune modification"]);}
     }
+
+
+
+    // #[OA\Delete(
+    //     path: '/api/comment-supprimer/{id}',
+    //     summary: 'Supprimer un commentaire',
+    //     security: [['sanctum' => []]],
+    //     tags: ['Comments'],
+    //     parameters:[new OA\Parameter(name: 'id', in: 'path',required: true, schema: new OA\Schema(type:'integer'))],
+    //     responses: [
+    //         new OA\Response(response: 200, description: 'commentaire supprimé'),
+    //         new OA\Response(response: 404, description: 'commentaire non trouvé'),
+    //         new OA\Response(response: 403,description: 'Acces refuse,juste les admins!!!')
+    //     ]
+    // )]
 
     /**
      * Remove the specified resource from storage.
