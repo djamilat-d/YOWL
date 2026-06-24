@@ -1,0 +1,344 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "YOWL API",
+        "description": "Dcumentation de l'API YOWL - app de commentaire",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://127.0.0.1:8000",
+            "description": "Serveur local"
+        }
+    ],
+    "paths": {
+        "/api/users": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Liste tous les utilisatrs",
+                "description": "Display a listing of the resource.",
+                "operationId": "c457726701591d1183b53aa71fc13441",
+                "responses": {
+                    "200": {
+                        "description": "Liste des users"
+                    },
+                    "403": {
+                        "description": "Acces refuse,juste les admins!!!"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/users/add": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Inscriptionn utilisateurs",
+                "description": "Store a newly created resource in storage.",
+                "operationId": "e50eac43552f74a9661a974f22131f3c",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "equality"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "equality@gmail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "12345678"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "example": "12345678"
+                                    },
+                                    "birth_year": {
+                                        "type": "string",
+                                        "example": "2026-09-28"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "07 48 74 37 66"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Utilisateur cree avec successss"
+                    },
+                    "422": {
+                        "description": "donnees non valides"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/users/{id}": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Afficher un utilisatrs",
+                "description": "Display the specified resource.",
+                "operationId": "36a33ff774d5cba33c039dec2c3e0287",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "users trouvé"
+                    },
+                    "404": {
+                        "description": "users non trouvé"
+                    },
+                    "403": {
+                        "description": "Acces refuse,juste les admins!!!"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/users/update/{id}": {
+            "patch": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Modifier un utilisateurs",
+                "description": "Update the specified resource in storage.",
+                "operationId": "c604c53ae85cc3559727a73f770b2eeb",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "equality"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "equality@gmail.com"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "0748743766"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Utilisateur modifier avec successss"
+                    },
+                    "404": {
+                        "description": "users non trouvé"
+                    },
+                    "403": {
+                        "description": "Acces refuse,juste les admins!!!"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/users/supprimer/{id}": {
+            "delete": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Supprimer un utilisatrs",
+                "description": "Remove the specified resource from storage.",
+                "operationId": "70a05f1cd43640f1661062ca1b44034d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "users supprimé"
+                    },
+                    "404": {
+                        "description": "users non trouvé"
+                    },
+                    "403": {
+                        "description": "Acces refuse,juste les admins!!!"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/signin": {
+            "post": {
+                "tags": [
+                    "Authentification"
+                ],
+                "summary": "Connexion des utilisatrs",
+                "operationId": "6f65ca5347286a9e44aad3f1e706929b",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "equality@gmail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "12345678"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "conexxion reusie"
+                    },
+                    "403": {
+                        "description": "identifiants incorrects"
+                    }
+                }
+            }
+        },
+        "/api/signup": {
+            "post": {
+                "tags": [
+                    "Authentification"
+                ],
+                "summary": "inscription des utilisatrs",
+                "description": "Store a newly created resource in storage.",
+                "operationId": "79886d8eb1bc9b7d28637662d0092630",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "equality"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "equality@gmail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "12345678"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "example": "12345678"
+                                    },
+                                    "birth_year": {
+                                        "type": "string",
+                                        "example": "2026-09-28"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "0748743766"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Utilisateur cree avec successss"
+                    },
+                    "400": {
+                        "description": "Age Insuffisant"
+                    },
+                    "422": {
+                        "description": "donnees non valides"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "sanctum": {
+                "type": "apiKey",
+                "description": "Enter token in format (Bearer <token>)",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Users",
+            "description": "Users"
+        },
+        {
+            "name": "Authentification",
+            "description": "Authentification"
+        }
+    ]
+}

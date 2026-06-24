@@ -1,0 +1,52 @@
+import { createRouter, createWebHistory } from 'vue-router'
+import HomeView from '../views/HomeView.vue'
+import SignupPage from '@/components/SignupPage.vue'
+import SigninPage from '@/components/SigninPage.vue'
+import CommentPage from '@/components/CommentPage.vue'
+import ModifieruserPage from '@/components/ModifieruserPage.vue'
+
+const router = createRouter({
+  history: createWebHistory(import.meta.env.BASE_URL),
+  routes: [
+    {
+      path: '/',
+      name: 'home',
+      component: HomeView,
+    },
+    {
+      path: '/about',
+      name: 'about',
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/AboutView.vue'),
+    },
+    {
+      path: '/signup',
+      name: 'signup',
+      component: SignupPage,
+      props: true,
+    },
+    {
+      path: '/signin',
+      name: 'signin',
+      component: SigninPage,
+      props: true,
+    },
+
+    {
+      path: '/add-comment',
+      name: 'add-comment',
+      component: CommentPage,
+      props: true,
+    },
+    {
+      path: '/modifieruser',
+      name: 'modifieruser',
+      component: ModifieruserPage,
+      props: true,
+    },
+  ],
+})
+
+export default router
